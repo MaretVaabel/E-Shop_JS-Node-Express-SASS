@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-pood</title>
+    <style>
+      /* Lisa CSS, et kuvada eri vaated, kategooriate filter, ostukorv ja lemmikud */
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        background-color: #eee;
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="/ylesanne3-dom"><h1>E-pood</h1></a>
+      <div id="categories">
+        <!-- Kategooriad: lisatakse JavaScripti abil -->
+      </div>
+      <div>
+        <button onclick="navigateTo('favorites')">Lemmikud</button>
+        <button onclick="navigateTo('cart')">
+          Ostukorv (<span id="cart-count">0</span>)
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section id="products-view" class="view active">
+        <h2>Tooted</h2>
+        <div id="products"></div>
+      </section>
+
+      <section id="product-detail-view" class="view">
+        <h2>Toote detail</h2>
+        <div id="product-detail"></div>
+      </section>
+
+      <section id="cart-view" class="view">
+        <h2>Ostukorv</h2>
+        <div id="cart-items"></div>
+        <div id="cart-summary"></div>
+      </section>
+
+      <section id="favorites-view" class="view">
+        <h2>Lemmikud</h2>
+        <div id="favorites"></div>
+      </section>
+    </main>
+
+    <!-- JavaScripti mooduli laadimine -->
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
