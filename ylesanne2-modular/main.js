@@ -4,8 +4,8 @@ import { Cart } from "./Cart.js";
 import { Customer } from "./Customer.js";
 
 // Loo mõned tooted
-const laptop = new Product("Sülearvuti", 999.99, "Elektroonika");
-const phone = new Product("Telefon", 599.99, "Elektroonika");
+const laptop = new Product(1, "Sülearvuti", 999.99, "Elektroonika");
+const phone = new Product(2, "Telefon", 599.99, "Elektroonika");
 
 // Loo ostukorv ja lisa tooted
 const cart = new Cart();

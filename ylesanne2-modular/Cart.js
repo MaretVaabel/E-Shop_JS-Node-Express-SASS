@@ -8,17 +8,17 @@ export class Cart {
     this.items.push({ product, quantity });
   }
 
-  removeProduct(productName) {
-    this.items = this.items.filter((item) => item.product.name !== productName);
+  removeProduct(productId) {
+    this.items = this.items.filter((item) => item.product.id !== productId);
   }
 
   get totalItems() {
-    return this.items.reduce((acc, item) => acc + item.quantity, 0);
+    return this.items.reduce((total, item) => total + item.quantity, 0);
   }
 
   calculateTotal() {
     return this.items.reduce(
-      (acc, item) => acc + item.product.price * item.quantity,
+      (total, item) => total + item.product.price * item.quantity,
       0
     );
   }
