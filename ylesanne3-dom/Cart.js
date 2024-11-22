@@ -36,20 +36,20 @@ export class Cart {
   }
 
   // Uuenda toote kogust
-  updateProductQuantity(index, delta) {
-    if (this.items[index]) {
-      this.items[index].quantity += delta;
-      if (this.items[index].quantity <= 0) {
-        this.removeProduct(index);
+  updateProductQuantity(productId, delta) {
+    const item = this.items.find((item) => item.product.id === productId);
+    if (item) {
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        this.removeProduct(productId);
       }
     }
   }
 
-  // Eemalda toode ostukorvist
-  removeProduct(index) {
-    if (this.items[index]) {
-      this.items.splice(index, 1);
-    }
+  // Eemalda toode ostukorvist ID järgi
+
+  removeProduct(productId) {
+    this.items = this.items.filter((item) => item.product.id !== productId);
   }
 
   // Kogu ostukorvi hind

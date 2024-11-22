@@ -2,9 +2,9 @@ import { Product } from "./Product.js";
 import { Cart } from "./Cart.js";
 
 const products = [
-  new Product("Sülearvuti", 999.99, "Elektroonika"),
-  new Product("Telefon", 599.99, "Elektroonika"),
-  new Product("Tahvelarvuti", 299.99, "Elektroonika"),
+  new Product(1, "Sülearvuti", 999.99, "Elektroonika"),
+  new Product(2, "Telefon", 599.99, "Elektroonika"),
+  new Product(3, "Tahvelarvuti", 299.99, "Elektroonika"),
 ];
 
 const cart = new Cart();
@@ -27,44 +27,44 @@ function displayProducts(category = null) {
     ? products.filter((p) => p.category === category)
     : products;
 
-  filteredProducts.forEach((product, index) => {
+  filteredProducts.forEach((product) => {
     const productElement = document.createElement("div");
     productElement.classList.add("product-item");
     productElement.innerHTML = `
-      <div onclick="showProductDetail(${index})">
+      <div onclick="showProductDetail(${product.id})">
         <h3>${product.name}</h3>
         <p>Kategooria: ${product.category}</p>
         <p>Hind: $${product.price}</p>
       </div>
-      <button onclick="addToCart(${index})">Lisa ostukorvi</button>
-      <button onclick="addToFavorites(${index})">Lisa lemmikutesse</button>
+      <button onclick="addToCart(${product.id})">Lisa ostukorvi</button>
+      <button onclick="addToFavorites(${product.id})">Lisa lemmikutesse</button>
     `;
     productsContainer.appendChild(productElement);
   });
 }
 
 // Toote detailvaate kuvamine
-window.showProductDetail = (index) => {
+window.showProductDetail = (productId) => {
   navigateTo("product-detail");
-  const product = products[index];
+  const product = products[productId];
   document.getElementById("product-detail").innerHTML = `
     <h3>${product.name}</h3>
     <p>Hind: $${product.price}</p>
-    <button onclick="addToCart(${index})">Lisa ostukorvi</button>
-    <button onclick="addToFavorites(${index})">Lisa lemmikutesse</button>
+    <button onclick="addToCart(${product.id})">Lisa ostukorvi</button>
+    <button onclick="addToFavorites(${product.id})">Lisa lemmikutesse</button>
   `;
 };
 
 // Ostukorvi haldamine
-window.addToCart = (index) => {
-  const product = products[index];
+window.addToCart = (productId) => {
+  const product = products[productId];
   cart.addProduct(product, 1);
   updateCartDisplay();
 };
 
 // Lemmikutesse lisamine
-window.addToFavorites = (index) => {
-  const product = products[index];
+window.addToFavorites = (productId) => {
+  const product = products[productId];
   if (!favorites.includes(product)) favorites.push(product);
   updateFavoritesDisplay();
 };
@@ -75,14 +75,14 @@ function updateCartDisplay() {
   const cartSummaryContainer = document.getElementById("cart-summary");
 
   cartItemsContainer.innerHTML = "";
-  cart.items.forEach((item, index) => {
+  cart.items.forEach((item) => {
     const itemElement = document.createElement("div");
     itemElement.innerHTML = `
       ${item.product.name} - $${item.product.price} x 
-      <button onclick="updateQuantity(${index}, -1)">-</button>
+      <button onclick="updateQuantity(${item.product.id}, -1)">-</button>
       ${item.quantity}
-      <button onclick="updateQuantity(${index}, 1)">+</button>
-      <button onclick="removeFromCart(${index})">Eemalda</button>
+      <button onclick="updateQuantity(${item.product.id}, 1)">+</button>
+      <button onclick="removeFromCart(${item.product.id})">Eemalda</button>
     `;
     cartItemsContainer.appendChild(itemElement);
   });
@@ -106,24 +106,24 @@ function updateCartDisplay() {
 function updateFavoritesDisplay() {
   const favoritesContainer = document.getElementById("favorites");
   favoritesContainer.innerHTML = "";
-  favorites.forEach((product, index) => {
+  favorites.forEach((product) => {
     const itemElement = document.createElement("div");
     itemElement.innerHTML = `
       <p>${product.describe()}</p>
-      <button onclick="addToCart(${index})">Lisa ostukorvi</button>
+      <button onclick="addToCart(${product.id})">Lisa ostukorvi</button>
     `;
     favoritesContainer.appendChild(itemElement);
   });
 }
 
 // Toote koguse muutmine ja eemaldamine ostukorvist
-window.updateQuantity = (index, delta) => {
-  cart.updateProductQuantity(index, delta);
+window.updateQuantity = (productId, delta) => {
+  cart.updateProductQuantity(productId, delta);
   updateCartDisplay();
 };
 
-window.removeFromCart = (index) => {
-  cart.removeProduct(index);
+window.removeFromCart = (productId) => {
+  cart.removeProduct(productId);
   updateCartDisplay();
 };
 
