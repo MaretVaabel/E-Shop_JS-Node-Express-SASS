@@ -1,5 +1,15 @@
+// 1. Toodete lisamine e-poodi
+// Loo Product klass, mis esindab ühte toodet. Klass peaks sisaldama järgmisi omadusi:
+// title - toote nimi (nt "Sülearvuti")
+// price - toote hind (nt 999.99)
+// category - toote kategooria (nt "Elektroonika")
+
+// Lisaks loo meetod describe(), mis tagastab toote nime, hinna ja kategooria kokkuvõttena.
+// Loo staatiline meetod discountedPrice, mis võtab hinna ja allahindlusprotsendi ning tagastab allahinnatud hinna.
+
 class Product {
-  constructor(name, price, category) {
+  constructor(id, name, price, category) {
+    this.id = id; // Unikaalne ID
     this.name = name;
     this.price = price;
     this.category = category;
@@ -14,9 +24,9 @@ class Product {
   }
 }
 
-const laptop = new Product("Sülearvuti", 999.99, "Elektroonika");
+const laptop = new Product(1, "Sülearvuti", 999.99, "Elektroonika");
 console.log(laptop.describe());
-console.log(Product.discountedPrice(laptop.price, 10)); // 10% allahindlus
+console.log("allahindlus", Product.discountedPrice(laptop.price, 10)); // 10% allahindlus
 
 class Cart {
   constructor() {
@@ -27,17 +37,17 @@ class Cart {
     this.items.push({ product, quantity });
   }
 
-  removeProduct(productName) {
-    this.items = this.items.filter((item) => item.product.name !== productName);
+  removeProduct(productId) {
+    this.items = this.items.filter((item) => item.product.id !== productId);
   }
 
   get totalItems() {
-    return this.items.reduce((acc, item) => acc + item.quantity, 0);
+    return this.items.reduce((total, item) => total + item.quantity, 0);
   }
 
   calculateTotal() {
     return this.items.reduce(
-      (acc, item) => acc + item.product.price * item.quantity,
+      (total, item) => total + item.product.price * item.quantity,
       0
     );
   }
