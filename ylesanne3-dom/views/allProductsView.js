@@ -1,4 +1,5 @@
 // Toodete vaate genereerimine
+import { navigate } from "../router.js";
 
 export const displayAllProductsView = (products) => {
   const container = document.getElementById("main-container");
@@ -20,7 +21,7 @@ export const displayAllProductsView = (products) => {
     // toote kaardile vajutades mine toode detaisesse vaatesse
     productCard.onclick = (e) => {
       e.stopPropagation();
-      navigateTo("product-detail");
+      navigate("productDetail", product);
     };
 
     //ühe toote kaardi lisan toodete konteinerisse
