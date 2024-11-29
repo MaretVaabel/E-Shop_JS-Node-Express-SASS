@@ -1,7 +1,13 @@
+import { Cart } from "../constructors/Cart.js";
+
+const cartConstructor = new Cart();
+
 //Ostukorvi vaate genereerimine
-export const displayCartView = (cart) => {
-  const container = document.getElementById("cart-view");
+export const displayCartView = () => {
+  const container = document.getElementById("main-container");
   container.innerHTML = "<h2>Ostukorv</h2>";
+
+  const cart = cartConstructor.getAllProducts();
 
   if (!cart.lenght) {
     const cartItemElement = document.createElement("p");

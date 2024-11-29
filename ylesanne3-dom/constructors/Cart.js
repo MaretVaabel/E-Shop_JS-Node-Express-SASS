@@ -23,6 +23,11 @@ export class Cart {
   //   );
   // }
 
+  //Võta kõik ostukorvi tooted
+  getAllProducts() {
+    return this.items;
+  }
+
   // Lisa toode ostukorvi või suurenda kogust
   addProduct(product, quantity) {
     const existingItem = this.items.find(
