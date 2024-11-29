@@ -21,11 +21,18 @@
       .view.active {
         display: block;
       }
+
+      #main-container {
+        background-color: lightblue;
+        padding: 50px;
+      }
+
       .product {
         border: 2px solid black;
         width: max-content;
         padding: 10px;
       }
+
       .products-container {
         display: grid;
         grid-auto-flow: column;
@@ -51,9 +58,9 @@
     </header>
 
     <main>
-      <section id="products-view" class="view active"></section>
+      <section id="main-container" class="view active"></section>
 
-      <section id="product-detail-view" class="view">
+      <!-- <section id="product-detail-view" class="view">
         <h2>Toote detail</h2>
         <div id="product-detail"></div>
       </section>
@@ -67,7 +74,7 @@
       <section id="favorites-view" class="view">
         <h2>Lemmikud</h2>
         <div id="favorites"></div>
-      </section>
+      </section> -->
     </main>
 
     <!-- JavaScripti mooduli laadimine -->
