@@ -21,24 +21,11 @@
       .view.active {
         display: block;
       }
-      .product {
-        border: 2px solid black;
-        width: max-content;
-        padding: 10px;
-      }
-      .products-container {
-        display: grid;
-        grid-auto-flow: column;
-      }
-
-      #products-view {
-        display: grid;
-      }
     </style>
   </head>
   <body>
     <header class="header">
-      <a href="/ylesanne3-dom"><h1>E-pood</h1></a>
+      <a href="/ylesanne4-events"><h1>E-pood</h1></a>
       <div id="categories">
         <!-- Kategooriad: lisatakse JavaScripti abil -->
       </div>
@@ -51,7 +38,10 @@
     </header>
 
     <main>
-      <section id="products-view" class="view active"></section>
+      <section id="products-view" class="view active">
+        <h2>Tooted</h2>
+        <div id="products"></div>
+      </section>
 
       <section id="product-detail-view" class="view">
         <h2>Toote detail</h2>
