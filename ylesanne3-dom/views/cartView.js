@@ -1,6 +1,6 @@
 import { Cart } from "../constructors/Cart.js";
 
-const cartConstructor = new Cart();
+export const cartConstructor = new Cart();
 
 //Ostukorvi vaate genereerimine
 export const displayCartView = () => {

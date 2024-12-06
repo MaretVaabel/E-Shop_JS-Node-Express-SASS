@@ -29,7 +29,7 @@ export class Cart {
   }
 
   // Lisa toode ostukorvi või suurenda kogust
-  addProduct(product, quantity) {
+  addProduct(product, quantity = 1) {
     const existingItem = this.items.find(
       (item) => item.product.name === product.name
     );
