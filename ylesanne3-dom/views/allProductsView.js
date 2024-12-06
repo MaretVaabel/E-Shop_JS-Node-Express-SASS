@@ -1,6 +1,6 @@
 // Toodete vaate genereerimine
 import { navigate } from "../router.js";
-import { cartConstructor } from "./cartView.js";
+import { cartConstructor } from "../constructors/Cart.js";
 import { cutomerConstructor } from "../constructors/Customer.js";
 
 export const displayAllProductsView = (products) => {
