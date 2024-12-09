@@ -4,7 +4,7 @@ import { cutomerConstructor } from "../constructors/Customer.js";
 export const displayFavoritesView = () => {
   const favorites = cutomerConstructor.getAllFavorites();
 
-  const container = document.getElementById("favorite-view");
+  const container = document.getElementById("main-container");
   container.innerHTML = "<h2>Lemmikud</h2>";
 
   favorites.forEach((item) => {

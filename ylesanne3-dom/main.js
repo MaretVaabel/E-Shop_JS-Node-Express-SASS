@@ -1,6 +1,10 @@
+import { cartConstructor } from "./constructors/Cart.js";
+import { cutomerConstructor } from "./constructors/Customer.js";
 import { Product } from "./constructors/Product.js";
 import { displayAllProductsView } from "./views/allProductsView.js";
-import { navigate } from "./router.js";
+import { displayCartView } from "./views/cartView.js";
+import { displayFavoritesView } from "./views/favoritesView.js";
+import { dispalyProductDetailView } from "./views/productDetailView.js";
 
 const products = [
   new Product(1, "Sülearvuti", 999.99, "Elektroonika"),
@@ -8,14 +12,18 @@ const products = [
   new Product(3, "Tahvelarvuti", 299.99, "Elektroonika"),
 ];
 
+cartConstructor.addProduct(products[0], products[2]);
+cutomerConstructor.toggleFavorites(products[0]);
+
 const initApp = async () => {
   const favoritesButton = document.getElementById("favorites-button");
-  favoritesButton.onclick = () => navigate("favorites");
 
   const cartButton = document.getElementById("cart-button");
-  cartButton.onclick = () => navigate("cart");
 
   displayAllProductsView(products);
+  dispalyProductDetailView(products[1]);
+  displayCartView();
+  displayFavoritesView();
 };
 
 document.addEventListener("DOMContentLoaded", initApp);

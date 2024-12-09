@@ -4,35 +4,22 @@ export class Cart {
     this.items = [];
   }
 
-  // addProduct(product, quantity) {
-  //   this.items.push({ product, quantity });
-  // }
-
-  // removeProduct(productName) {
-  //   this.items = this.items.filter((item) => item.product.name !== productName);
-  // }
-
-  // get totalItems() {
-  //   return this.items.reduce((acc, item) => acc + item.quantity, 0);
-  // }
-
-  // calculateTotal() {
-  //   return this.items.reduce(
-  //     (acc, item) => acc + item.product.price * item.quantity,
-  //     0
-  //   );
-  // }
+  //Võta kõik ostukorvi tooted
+  getAllProducts() {
+    return this.items;
+  }
 
   // Lisa toode ostukorvi või suurenda kogust
-  addProduct(product, quantity) {
+  addProduct(product, quantity = 1) {
     const existingItem = this.items.find(
-      (item) => item.product.name === product.name
+      (item) => item.product.id === product.id
     );
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
       this.items.push({ product, quantity });
     }
+    this.displayTotalItems();
   }
 
   // Uuenda toote kogust
@@ -44,12 +31,14 @@ export class Cart {
         this.removeProduct(productId);
       }
     }
+    this.displayTotalItems();
   }
 
   // Eemalda toode ostukorvist ID järgi
 
   removeProduct(productId) {
     this.items = this.items.filter((item) => item.product.id !== productId);
+    this.displayTotalItems();
   }
 
   // Kogu ostukorvi hind
@@ -61,8 +50,13 @@ export class Cart {
   }
 
   // Toodete koguarv
-  get totalItems() {
-    return this.items.reduce((total, item) => total + item.quantity, 0);
+  displayTotalItems() {
+    const cartCout = document.getElementById("cart-count");
+
+    cartCout.innerHTML = this.items.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
   }
 
   // Ostukorvi tühjendamine
@@ -70,3 +64,5 @@ export class Cart {
     this.items = [];
   }
 }
+
+export const cartConstructor = new Cart();

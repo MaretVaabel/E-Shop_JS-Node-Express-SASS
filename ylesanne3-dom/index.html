@@ -15,12 +15,6 @@
         padding: 10px;
         background-color: #eee;
       }
-      .view {
-        display: none;
-      }
-      .view.active {
-        display: block;
-      }
 
       #main-container {
         background-color: lightblue;
@@ -59,6 +53,11 @@
 
     <main>
       <section id="main-container"></section>
+
+      <!-- pärast route lisamist kustutame teised sektsioonid ja otsime üles ainult main-container'i -->
+      <section id="detailed-view"></section>
+      <section id="cart-view"></section>
+      <section id="favorite-view"></section>
     </main>
 
     <!-- JavaScripti mooduli laadimine -->

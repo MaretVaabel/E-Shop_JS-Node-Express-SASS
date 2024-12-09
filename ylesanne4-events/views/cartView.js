@@ -2,7 +2,7 @@ import { cartConstructor } from "../constructors/Cart.js";
 
 //Ostukorvi vaate genereerimine
 export const displayCartView = () => {
-  const container = document.getElementById("cart-view");
+  const container = document.getElementById("main-container");
   container.innerHTML = "<h2>Ostukorv</h2>";
 
   const cart = cartConstructor.getAllProducts();
@@ -24,6 +24,10 @@ export const displayCartView = () => {
       // Eemaldamisnupp
       const removeButton = document.createElement("button");
       removeButton.textContent = "Eemalda";
+      removeButton.onclick = () => {
+        cartConstructor.removeProduct(item.product.id);
+        displayCartView();
+      };
 
       cartItemElement.appendChild(removeButton);
       container.append(cartItemElement);

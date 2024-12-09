@@ -23,6 +23,7 @@ export class Customer {
       );
     });
   }
+
   toggleFavorites(product) {
     const existingItem = this.favorites.find(
       (item) => item.product.id === product.id

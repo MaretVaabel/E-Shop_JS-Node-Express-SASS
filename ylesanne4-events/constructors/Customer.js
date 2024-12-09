@@ -5,6 +5,7 @@ export class Customer {
   constructor(name) {
     this.name = name;
     this.orderHistory = [];
+    this.favorites = [];
   }
 
   placeOrder(cart) {
@@ -22,4 +23,23 @@ export class Customer {
       );
     });
   }
+  toggleFavorites(product) {
+    const existingItem = this.favorites.find(
+      (item) => item.product.id === product.id
+    );
+    if (existingItem) {
+      this.favorites = this.favorites.filter(
+        (item) => item.product.id !== product.id
+      );
+    } else {
+      this.favorites.push({ product });
+    }
+    console.log("Kõik lemikud ", this.favorites);
+  }
+
+  getAllFavorites() {
+    return this.favorites;
+  }
 }
+
+export const cutomerConstructor = new Customer("Maret");

@@ -1,6 +1,6 @@
 // Ühe toote detailvaate genereerimine
 export const dispalyProductDetailView = (product) => {
-  const container = document.getElementById("main-container");
+  const container = document.getElementById("detailed-view");
   container.innerHTML = "";
 
   const productCard = document.createElement("div");
