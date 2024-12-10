@@ -14,6 +14,15 @@ export const displayFavoritesView = () => {
         <h3>${item.product.name}</h3>
         <p>Hind: $${item.product.price}</p>
       `;
+
+    // Eemaldamisnupp
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Eemalda lemmikutest";
+    removeButton.onclick = () => {
+      cutomerConstructor.toggleFavorites(item.product);
+      displayFavoritesView();
+    };
+    favoriteItemElement.append(removeButton);
     container.appendChild(favoriteItemElement);
   });
 };
