@@ -9,6 +9,9 @@ const products = [
 ];
 
 const initApp = async () => {
+  const homeButton = document.getElementById("home-button");
+  homeButton.onclick = () => initApp();
+
   const favoritesButton = document.getElementById("favorites-button");
   favoritesButton.onclick = () => navigate("favorites");
 

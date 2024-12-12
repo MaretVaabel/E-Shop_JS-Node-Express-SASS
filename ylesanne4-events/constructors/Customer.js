@@ -11,6 +11,7 @@ export class Customer {
   placeOrder(cart) {
     const order = new Order(cart);
     this.orderHistory.push(order);
+    order.printOrder();
   }
 
   printOrderHistory() {
@@ -34,7 +35,13 @@ export class Customer {
     } else {
       this.favorites.push({ product });
     }
-    console.log("Kõik lemikud ", this.favorites);
+  }
+
+  isFavorite(productId) {
+    const existingItem = this.favorites.find(
+      (item) => item.product.id === productId
+    );
+    return !!existingItem;
   }
 
   getAllFavorites() {
@@ -42,4 +49,4 @@ export class Customer {
   }
 }
 
-export const cutomerConstructor = new Customer("Maret");
+export const customerConstructor = new Customer("Maret");

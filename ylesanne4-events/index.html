@@ -16,6 +16,8 @@
         background-color: #eee;
       }
       #main-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
         background-color: lightblue;
         padding: 50px;
       }
@@ -34,11 +36,30 @@
       #products-view {
         display: grid;
       }
+      .cart-container {
+        display: grid;
+      }
+      .cart-items-container {
+        display: grid;
+        grid-auto-flow: column;
+      }
+      .order-container {
+        position: absolute;
+        padding: 40px;
+        margin-inline: auto;
+        background-color: #fff;
+        width: fit-content;
+        left: 0;
+        right: 0;
+      }
+      .order-container-hidden {
+        display: none;
+      }
     </style>
   </head>
   <body>
     <header class="header">
-      <a href="/ylesanne4-events"><h1>E-pood</h1></a>
+      <button id="home-button"><h1>E-pood</h1></button>
       <div id="categories">
         <!-- Kategooriad: lisatakse JavaScripti abil -->
       </div>

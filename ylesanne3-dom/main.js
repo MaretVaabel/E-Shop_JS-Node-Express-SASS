@@ -1,5 +1,5 @@
 import { cartConstructor } from "./constructors/Cart.js";
-import { cutomerConstructor } from "./constructors/Customer.js";
+import { customerConstructor } from "./constructors/Customer.js";
 import { Product } from "./constructors/Product.js";
 import { displayAllProductsView } from "./views/allProductsView.js";
 import { displayCartView } from "./views/cartView.js";
@@ -13,7 +13,7 @@ const products = [
 ];
 
 cartConstructor.addProduct(products[0], products[2]);
-cutomerConstructor.toggleFavorites(products[0]);
+customerConstructor.toggleFavorites(products[0]);
 
 const initApp = async () => {
   const favoritesButton = document.getElementById("favorites-button");

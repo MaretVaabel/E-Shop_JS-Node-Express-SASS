@@ -35,7 +35,6 @@ export class Customer {
     } else {
       this.favorites.push({ product });
     }
-    console.log("Kõik lemikud ", this.favorites);
   }
 
   getAllFavorites() {
@@ -43,4 +42,4 @@ export class Customer {
   }
 }
 
-export const cutomerConstructor = new Customer("Maret");
+export const customerConstructor = new Customer("Maret");

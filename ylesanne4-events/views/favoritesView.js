@@ -1,8 +1,8 @@
-import { cutomerConstructor } from "../constructors/Customer.js";
+import { customerConstructor } from "../constructors/Customer.js";
 
 // Lemmikute vaate genereerimine
 export const displayFavoritesView = () => {
-  const favorites = cutomerConstructor.getAllFavorites();
+  const favorites = customerConstructor.getAllFavorites();
 
   const container = document.getElementById("main-container");
   container.innerHTML = "<h2>Lemmikud</h2>";
@@ -19,7 +19,7 @@ export const displayFavoritesView = () => {
     const removeButton = document.createElement("button");
     removeButton.textContent = "Eemalda lemmikutest";
     removeButton.onclick = () => {
-      cutomerConstructor.toggleFavorites(item.product);
+      customerConstructor.toggleFavorites(item.product);
       displayFavoritesView();
     };
     favoriteItemElement.append(removeButton);

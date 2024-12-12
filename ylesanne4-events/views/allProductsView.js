@@ -1,7 +1,7 @@
 // Toodete vaate genereerimine
 import { navigate } from "../router.js";
 import { cartConstructor } from "../constructors/Cart.js";
-import { cutomerConstructor } from "../constructors/Customer.js";
+import { customerConstructor } from "../constructors/Customer.js";
 
 export const displayAllProductsView = (products) => {
   const container = document.getElementById("main-container");
@@ -18,7 +18,9 @@ export const displayAllProductsView = (products) => {
         <h3>${product.name}</h3>
         <p>Kategooria: ${product.category}</p>
         <p>Hind: $${product.price}</p>
-        <button id="favorites-${product.id}" class="favorites">Lisa lemmikutesse</button>
+        <button id="favorites-${product.id}" class="favorites">${
+      customerConstructor.isFavorite(product.id) ? "🩷" : "🤍"
+    }</button>
       `;
 
     //NB!! Kaks viis nuppude lisamiseks
@@ -39,19 +41,22 @@ export const displayAllProductsView = (products) => {
       // toote kaardile vajutades otsi favorite nuppu toggelda seda, vaadet vahetamata
       if (event.target.id === `favorites-${product.id}`) {
         //otsin lemmikute nupu id põhjal
-        const favoriteButton = document.getElementById(
-          `favorites-${product.id}`
-        );
+        const favoriteButton = event.target;
         //toggeldan lemmikute nupu klassi nime "inFavorites" pannes juurde ja võttes ära
         favoriteButton.classList.toggle("inFavorites");
         //vastavelt klassi nimele lisan teksi või ikooni, kes soovib
-        favoriteButton.textContent = favoriteButton.classList.contains(
-          "inFavorites"
-        )
-          ? "Eemalda lemmikutest"
-          : "Lisa lemmikutesse";
 
-        cutomerConstructor.toggleFavorites(product);
+        favoriteButton.textContent = customerConstructor.isFavorite(product.id)
+          ? "🤍"
+          : "🩷";
+
+        //Või vaatad, kas klassinimi on olemas klassi listis või mitte
+        // favoriteButton.textContent = favoriteButton.classList.contains(
+        //   "inFavorites"
+        // )
+        //   ? "🤍" : "🩷";
+
+        customerConstructor.toggleFavorites(product);
       } else {
         // toote kaardile üks kõik kuhu mujale vajutades mine toode detaisesse vaatesse
         navigate("productDetail", product);
