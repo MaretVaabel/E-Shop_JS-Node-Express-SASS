@@ -3,12 +3,6 @@ import { displayAllProductsView } from "./views/allProductsView.js";
 import { navigate } from "./router.js";
 import { getAllCategory } from "./api.js";
 
-// const products = [
-//   new Product(1, "Sülearvuti", 999.99, "Elektroonika"),
-//   new Product(2, "Telefon", 599.99, "Elektroonika"),
-//   new Product(3, "Tahvelarvuti", 299.99, "Elektroonika"),
-// ];
-
 const initApp = async () => {
   const homeButton = document.getElementById("home-button");
   homeButton.onclick = () => initApp();
@@ -35,4 +29,5 @@ const initApp = async () => {
 
   displayAllProductsView();
 };
+
 document.addEventListener("DOMContentLoaded", initApp);

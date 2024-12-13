@@ -62,7 +62,7 @@ export const displayAllProductsView = async (category) => {
         customerConstructor.toggleFavorites(product);
       } else {
         // toote kaardile üks kõik kuhu mujale vajutades mine toode detaisesse vaatesse
-        navigate("productDetail", product);
+        navigate("productDetail", product.id);
       }
     });
 

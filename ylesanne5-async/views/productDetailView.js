@@ -1,8 +1,11 @@
+import { getProductById } from "../api.js";
 import { cartConstructor } from "../constructors/Cart.js";
 import { customerConstructor } from "../constructors/Customer.js";
 
 // Ühe toote detailvaate genereerimine
-export const dispalyProductDetailView = (product) => {
+export const dispalyProductDetailView = async (productId) => {
+  const product = await getProductById(productId);
+
   const container = document.getElementById("main-container");
   container.innerHTML = "";
 

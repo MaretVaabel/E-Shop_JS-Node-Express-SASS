@@ -20,7 +20,7 @@ export const getProductsDataByCategoy = async (category = "All products") => {
     const data = await fetch(`${BASE_URL}/products${byCategory}`);
 
     const productsData = await data.json();
-    const dataOject = productsData.map(
+    const dataObject = productsData.map(
       (item) =>
         new Product(
           item.id,
@@ -31,7 +31,7 @@ export const getProductsDataByCategoy = async (category = "All products") => {
           item.image
         )
     );
-    return dataOject;
+    return dataObject;
   } catch (error) {
     console.error(error);
   }
@@ -43,7 +43,7 @@ export const getProductsByCategory = async (category) => {
     const data = await fetch(`${BASE_URL}/products/category/${category}`);
     const productsData = await data.json();
 
-    const dataOject = productsData.map(
+    const dataObject = productsData.map(
       (item) =>
         new Product(
           item.id,
@@ -54,7 +54,7 @@ export const getProductsByCategory = async (category) => {
           item.image
         )
     );
-    return dataOject;
+    return dataObject;
   } catch (error) {
     console.error(error);
   }
@@ -70,11 +70,15 @@ export const getAllCategory = async () => {
 };
 
 export const getProductById = async (productId) => {
+  console.log("id", productId);
   try {
     const data = await fetch(`${BASE_URL}/products/${productId}`);
 
     const productData = await data.json();
-    const dataOject = new Product(
+
+    console.log(productData);
+
+    const dataObject = new Product(
       productData.id,
       productData.title,
       productData.price,
@@ -83,7 +87,7 @@ export const getProductById = async (productId) => {
       productData.image
     );
 
-    return dataOject;
+    return dataObject;
   } catch (error) {
     console.error(error);
   }

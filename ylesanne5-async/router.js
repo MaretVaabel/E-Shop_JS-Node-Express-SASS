@@ -1,7 +1,7 @@
-import { displayFavoritesView } from "../ylesanne4-events/views/favoritesView.js";
-import { dispalyProductDetailView } from "../ylesanne4-events/views/productDetailView.js";
-import { displayCartView } from "../ylesanne4-events/views/cartView.js";
-import { displayAllProductsView } from "../ylesanne4-events/views/allProductsView.js";
+import { displayFavoritesView } from "./views/favoritesView.js";
+import { dispalyProductDetailView } from "./views/productDetailView.js";
+import { displayCartView } from "./views/cartView.js";
+import { displayAllProductsView } from "./views/allProductsView.js";
 
 export const navigate = (view, param) => {
   const views = {
