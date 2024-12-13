@@ -2,8 +2,11 @@
 import { navigate } from "../router.js";
 import { cartConstructor } from "../constructors/Cart.js";
 import { customerConstructor } from "../constructors/Customer.js";
+import { getProductsDataByCategoy } from "../api.js";
 
-export const displayAllProductsView = (products) => {
+export const displayAllProductsView = async (category) => {
+  const products = await getProductsDataByCategoy(category);
+
   const container = document.getElementById("main-container");
 
   container.innerHTML = "<h2>Tooted</h2>";

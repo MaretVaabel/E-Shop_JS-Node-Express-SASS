@@ -1,0 +1,60 @@
+@import "./variables";
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+button {
+  background-color: $primaryBtn;
+
+  &:hover {
+    background-color: $primaryBtnHover;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #eee;
+}
+#main-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  background-color: lightblue;
+  padding: 50px;
+}
+
+.product {
+  border: 2px solid black;
+  width: max-content;
+  padding: 10px;
+}
+
+.products-container {
+  display: grid;
+  grid-auto-flow: column;
+}
+
+#products-view {
+  display: grid;
+}
+.cart-container {
+  display: grid;
+}
+.cart-items-container {
+  display: grid;
+  grid-auto-flow: column;
+}
+.order-container {
+  position: absolute;
+  padding: 40px;
+  margin-inline: auto;
+  background-color: #fff;
+  width: fit-content;
+  left: 0;
+  right: 0;
+}
+.order-container-hidden {
+  display: none;
+}

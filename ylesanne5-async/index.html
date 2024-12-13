@@ -4,58 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>E-pood</title>
-    <style>
-      /* Lisa CSS, et kuvada eri vaated, kategooriate filter, ostukorv ja lemmikud */
-      body {
-        font-family: Arial, sans-serif;
-      }
-      .header {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        background-color: #eee;
-      }
-      #main-container {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        background-color: lightblue;
-        padding: 50px;
-      }
-
-      .product {
-        border: 2px solid black;
-        width: max-content;
-        padding: 10px;
-      }
-
-      .products-container {
-        display: grid;
-        grid-auto-flow: column;
-      }
-
-      #products-view {
-        display: grid;
-      }
-      .cart-container {
-        display: grid;
-      }
-      .cart-items-container {
-        display: grid;
-        grid-auto-flow: column;
-      }
-      .order-container {
-        position: absolute;
-        padding: 40px;
-        margin-inline: auto;
-        background-color: #fff;
-        width: fit-content;
-        left: 0;
-        right: 0;
-      }
-      .order-container-hidden {
-        display: none;
-      }
-    </style>
+    <link rel="stylesheet" href="../css/style.min.css" />
   </head>
   <body>
     <header class="header">
