@@ -5,7 +5,7 @@ import { getAllCategory } from "./api.js";
 
 const initApp = async () => {
   const homeButton = document.getElementById("home-button");
-  homeButton.onclick = () => initApp();
+  homeButton.onclick = () => navigate("allProducts");
 
   const favoritesButton = document.getElementById("favorites-button");
   favoritesButton.onclick = () => navigate("favorites");

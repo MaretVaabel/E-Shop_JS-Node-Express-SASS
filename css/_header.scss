@@ -1,0 +1,39 @@
+.header {
+  background-color: $secondaryBackground;
+  color: $lightText;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+
+  #home-button,
+  #favorites-button,
+  #cart-button {
+    background-color: inherit;
+    border: 1px solid $secondaryBackground;
+    color: $secondaryText;
+    padding: 10px;
+
+    &:hover {
+      border: 1px solid $secondaryBtnHover;
+    }
+  }
+
+  .categories {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+
+    li {
+      padding: 10px;
+      border: 1px solid $secondaryBackground;
+      text-transform: capitalize;
+
+      &:hover {
+        border: 1px solid $secondaryBtnHover;
+      }
+    }
+  }
+}

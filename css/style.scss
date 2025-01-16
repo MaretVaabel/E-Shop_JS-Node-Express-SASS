@@ -1,39 +1,36 @@
 @import "./variables";
+@import "./header";
 
 body {
   font-family: Arial, sans-serif;
 }
 
-button {
-  background-color: $primaryBtn;
+// button {
+//   background-color: $primaryBtn;
 
-  &:hover {
-    background-color: $primaryBtnHover;
-  }
-}
+//   &:hover {
+//     background-color: $primaryBtnHover;
+//   }
+// }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  background-color: #eee;
-}
 #main-container {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  background-color: lightblue;
+  background-color: $primaryBackground;
+  color: $secondaryText;
   padding: 50px;
-}
-
-.product {
-  border: 2px solid black;
-  width: max-content;
-  padding: 10px;
 }
 
 .products-container {
   display: grid;
-  grid-auto-flow: column;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.product {
+  border: 2px solid black;
+
+  padding: 10px;
+  width: 300px;
 }
 
 #products-view {
