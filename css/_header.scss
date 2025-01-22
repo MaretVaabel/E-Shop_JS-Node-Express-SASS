@@ -8,7 +8,8 @@
 
   #home-button,
   #favorites-button,
-  #cart-button {
+  #cart-button,
+  #login-button {
     background-color: inherit;
     border: 1px solid $secondaryBackground;
     color: $secondaryText;
@@ -36,4 +37,10 @@
       }
     }
   }
+}
+.hidden {
+  display: none;
+}
+.show {
+  display: block;
 }
