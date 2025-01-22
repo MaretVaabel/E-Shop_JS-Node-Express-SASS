@@ -5,7 +5,7 @@ import { displayAllProductsView } from "./views/allProductsView.js";
 
 export const navigate = (view, param) => {
   const views = {
-    allProducts: () => displayAllProductsView(param || "all"), // Kasuta vaikeväärtust "all" kategooriana
+    category: () => displayAllProductsView(param), // Kasuta vaikeväärtust "all" kategooriana
     productDetail: () => dispalyProductDetailView(param), // üks toode
     cart: () => displayCartView(), // Näita ostukorvi vaadet
     favorites: () => displayFavoritesView(),

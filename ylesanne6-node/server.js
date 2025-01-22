@@ -11,8 +11,8 @@ const PORT = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DATA_FILE = path.join(__dirname, "data", "products.json");
-const filePath = DATA_FILE;
+const filePath = path.join(__dirname, "data", "products.json");
+const favoritesFilePath = path.join(__dirname, "data", "favorites.json");
 
 // Middleware staatiliste failide jaoks
 app.use(express.static("public"));
@@ -41,6 +41,7 @@ app.get("/api/products", async (req, res) => {
     // Seadista vastuse päised
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+
     // Kontrolli, kas fail on tühi
     const emptyFile = await isFileEmpty(filePath);
 
@@ -65,7 +66,6 @@ app.get("/api/products", async (req, res) => {
 });
 
 app.get("/api/products/category/:category", async (req, res) => {
-  console.log(req.params);
   try {
     // Seadista vastuse päised
     res.setHeader("Content-Type", "application/json");
@@ -95,7 +95,7 @@ app.get("/api/products/categories", async (req, res) => {
     const uniqueArray = [...new Set(categories)];
 
     if (uniqueArray) {
-      res.json(uniqueArray);
+      res.status(200).json(uniqueArray);
     } else {
       res.status(404).json({ message: "Kategooria lugemine ebaõnnestus" });
     }
@@ -111,12 +111,102 @@ app.get("/api/products/:id", async (req, res) => {
     const product = data.find((p) => p.id === parseInt(req.params.id));
 
     if (product) {
-      res.json(product);
+      res.status(200).json(product);
     } else {
-      res.status(404).json({ message: "Product not found" });
+      res.status(404).json({ message: "Toote andmete lugemine ebaõnnestus" });
     }
   } catch (error) {
-    res.status(404).json({ message: "Data not found" });
+    res.status(404).json({ message: "Andmete lugemine ebaõnnestus" });
+  }
+});
+
+// Endpoint to get a favorites products by client id
+app.get("/api/favorites/:clientId", async (req, res) => {
+  try {
+    const favoritesData = JSON.parse(
+      await fs.readFile(favoritesFilePath, "utf-8")
+    );
+
+    const favoritesIds = favoritesData[req.params.clientId] || [];
+
+    const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
+
+    const products = data.filter((product) =>
+      favoritesIds.includes(product.id)
+    );
+
+    if (products) {
+      res.status(200).json(products);
+    } else {
+      res.status(404).json({ message: "Toote andmete lugemine ebaõnnestus" });
+    }
+  } catch (error) {
+    res.status(404).json({ message: "Andmete lugemine ebaõnnestus" });
+  }
+});
+
+// Endpoint to add a favorite product by ID
+app.post("/api/favorites/:clientId/:productId", async (req, res) => {
+  try {
+    const emptyFile = await isFileEmpty(favoritesFilePath);
+    if (emptyFile) {
+      //make the object, that has client id as key and array of product ids as value
+      const newData = {
+        [req.params.clientId]: [parseInt(req.params.productId)],
+      };
+      await fs.writeFile(favoritesFilePath, JSON.stringify(newData, null, 2));
+      return res.status(200).json(newData);
+    }
+
+    const favoritesData = JSON.parse(
+      await fs.readFile(favoritesFilePath, "utf-8")
+    );
+
+    //take the client favorite product id array from file
+    const favoritesIds = favoritesData[req.params.clientId] || [];
+
+    //add id to the file array
+    favoritesIds.push(parseInt(req.params.productId));
+    const uniqueIds = [...new Set(favoritesIds)];
+    favoritesData[req.params.clientId] = uniqueIds;
+
+    // write new array to file
+    await fs.writeFile(
+      favoritesFilePath,
+      JSON.stringify(favoritesData, null, 2)
+    );
+    //See json, mis sa siin tagastad on näha ka veebilhitseja network tab'is
+    res.status(200).json(uniqueIds);
+  } catch (error) {
+    res
+      .status(404)
+      .json({ message: "Andmete kirjutamine lemmikutesse ebaõnnestus" });
+  }
+});
+
+// Endpoint to delete a favorite product by ID
+app.delete("/api/favorites/:clientId/:productId", async (req, res) => {
+  try {
+    const favoritesData = JSON.parse(
+      await fs.readFile(favoritesFilePath, "utf-8")
+    );
+    //take the client favorite product id array from file
+    const favoritesIds = favoritesData[req.params.clientId] || [];
+    //delete id from the file
+
+    const newArray = favoritesIds.filter(
+      (id) => id !== parseInt(req.params.productId)
+    );
+    favoritesData[req.params.clientId] = newArray;
+    // write new array to file
+    await fs.writeFile(
+      favoritesFilePath,
+      JSON.stringify(favoritesData, null, 2)
+    );
+
+    res.status(200).json(favoritesData);
+  } catch (error) {
+    res.status(404).json({ message: "Andmete kirjutamine ebaõnnestus" });
   }
 });
 
