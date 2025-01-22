@@ -121,13 +121,13 @@ app.get("/api/products/:id", async (req, res) => {
 });
 
 // Endpoint to get a favorites products by client id
-app.get("/api/favorites/:clientId", async (req, res) => {
+app.get("/api/favorites/:userID", async (req, res) => {
   try {
     const favoritesData = JSON.parse(
       await fs.readFile(favoritesFilePath, "utf-8")
     );
 
-    const favoritesIds = favoritesData[req.params.clientId] || [];
+    const favoritesIds = favoritesData[req.params.userID] || [];
 
     const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
 
@@ -146,13 +146,13 @@ app.get("/api/favorites/:clientId", async (req, res) => {
 });
 
 // Endpoint to add a favorite product by ID
-app.post("/api/favorites/:clientId/:productId", async (req, res) => {
+app.post("/api/favorites/:userID/:productId", async (req, res) => {
   try {
     const emptyFile = await isFileEmpty(favoritesFilePath);
     if (emptyFile) {
       //make the object, that has client id as key and array of product ids as value
       const newData = {
-        [req.params.clientId]: [parseInt(req.params.productId)],
+        [req.params.userID]: [parseInt(req.params.productId)],
       };
       await fs.writeFile(favoritesFilePath, JSON.stringify(newData, null, 2));
       return res.status(200).json(newData);
@@ -163,12 +163,12 @@ app.post("/api/favorites/:clientId/:productId", async (req, res) => {
     );
 
     //take the client favorite product id array from file
-    const favoritesIds = favoritesData[req.params.clientId] || [];
+    const favoritesIds = favoritesData[req.params.userID] || [];
 
     //add id to the file array
     favoritesIds.push(parseInt(req.params.productId));
     const uniqueIds = [...new Set(favoritesIds)];
-    favoritesData[req.params.clientId] = uniqueIds;
+    favoritesData[req.params.userID] = uniqueIds;
 
     // write new array to file
     await fs.writeFile(
@@ -185,19 +185,19 @@ app.post("/api/favorites/:clientId/:productId", async (req, res) => {
 });
 
 // Endpoint to delete a favorite product by ID
-app.delete("/api/favorites/:clientId/:productId", async (req, res) => {
+app.delete("/api/favorites/:userID/:productId", async (req, res) => {
   try {
     const favoritesData = JSON.parse(
       await fs.readFile(favoritesFilePath, "utf-8")
     );
     //take the client favorite product id array from file
-    const favoritesIds = favoritesData[req.params.clientId] || [];
+    const favoritesIds = favoritesData[req.params.userID] || [];
     //delete id from the file
 
     const newArray = favoritesIds.filter(
       (id) => id !== parseInt(req.params.productId)
     );
-    favoritesData[req.params.clientId] = newArray;
+    favoritesData[req.params.userID] = newArray;
     // write new array to file
     await fs.writeFile(
       favoritesFilePath,

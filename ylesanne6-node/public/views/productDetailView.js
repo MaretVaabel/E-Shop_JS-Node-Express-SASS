@@ -23,7 +23,7 @@ export const dispalyProductDetailView = async (productId) => {
   cartButton.textContent = "Lisa ostukorvi";
   cartButton.onclick = (e) => {
     e.stopPropagation(); // see ei lase parent'i tegevusi teha, ehk ei liigu detail vaatesse
-    cartConstructor.addProduct(product);
+    cartConstructor.addProduct(product.id);
   };
 
   const favoriteButton = document.createElement("button");
@@ -36,7 +36,7 @@ export const dispalyProductDetailView = async (productId) => {
     favoriteButton.textContent = customerConstructor.isFavorite(product.id)
       ? "Lisa Lemmikutesse"
       : "Eemalda Lemmikutest";
-    customerConstructor.toggleFavorites(product);
+    customerConstructor.toggleFavorites(product.id);
   };
 
   //ostukorvi nupu lisamine productCardile
