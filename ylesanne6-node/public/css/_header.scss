@@ -20,6 +20,11 @@
     }
   }
 
+  .action-buttons {
+    display: grid;
+    grid-auto-flow: column;
+  }
+
   .categories {
     list-style: none;
     display: flex;

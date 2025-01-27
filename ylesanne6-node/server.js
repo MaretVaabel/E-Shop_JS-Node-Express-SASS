@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import axios from "axios";
 import path from "path";
 import { fileURLToPath } from "url";
+import { randomUUID } from "crypto";
 
 const app = express();
 const PORT = 3000;
@@ -12,6 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const filePath = path.join(__dirname, "data", "products.json");
+const customersFilePath = path.join(__dirname, "data", "customers.json");
 const favoritesFilePath = path.join(__dirname, "data", "favorites.json");
 
 // Middleware staatiliste failide jaoks
@@ -207,6 +209,35 @@ app.delete("/api/favorites/:userID/:productId", async (req, res) => {
     res.status(200).json(favoritesData);
   } catch (error) {
     res.status(404).json({ message: "Andmete kirjutamine ebaõnnestus" });
+  }
+});
+
+//Endpoint for collecting the users
+app.post("/api/user/:user", async (req, res) => {
+  try {
+    const customersData = JSON.parse(
+      await fs.readFile(customersFilePath, "utf-8")
+    );
+
+    const userData = customersData.find((obj) => obj.name === req.params.user);
+    console.log(customersData, randomUUID());
+
+    if (!userData) {
+      //make the object, that has client id as key and array of product ids as value
+      const newData = {
+        id: randomUUID(),
+        name: req.params.user,
+      };
+
+      await fs.writeFile(
+        customersFilePath,
+        JSON.stringify([...customersData, newData], null, 2)
+      );
+      return res.status(200).json(newData);
+    }
+    return res.status(200).json(userData);
+  } catch (error) {
+    res.status(404).json({ message: "Sisse logimine ebaõnnestus" });
   }
 });
 
