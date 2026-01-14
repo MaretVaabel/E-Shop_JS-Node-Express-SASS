@@ -6,7 +6,12 @@ const BASE_URL = "https://fakestoreapi.com";
 export const getProductsDataFromJson = async () => {
   try {
     const data = await fetch("./data.json");
-    return data.json();
+    const jsonData = data.json();
+    const constructedData = jsonData.map(
+      (product) =>
+        new Product(product.id, product.name, product.price, product.category)
+    );
+    return constructedData;
   } catch (error) {
     console.error(error);
   }
