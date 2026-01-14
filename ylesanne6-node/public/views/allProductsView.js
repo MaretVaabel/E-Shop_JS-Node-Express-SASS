@@ -7,6 +7,7 @@ import { getProductsDataByCategory } from "../api.js";
 export const displayAllProductsView = async (category) => {
   const products = await getProductsDataByCategory(category);
 
+  console.log("products", products);
   const container = document.getElementById("main-container");
 
   container.innerHTML = "<h2>Tooted</h2>";
@@ -25,7 +26,7 @@ export const displayAllProductsView = async (category) => {
       customerConstructor.isFavorite(product.id) ? "🩷" : "🤍"
     }</button>
       `;
-
+    console.log("11", customerConstructor.isFavorite(product.id));
     //NB!! Kaks viis nuppude lisamiseks
     //1. lisan nupu innerHtml'i ja kasutan addEventListener'i, mis on all pool
     //2. Ostukorvi nupu lisamine createElement'iga, kus saab sündumse külge panna
@@ -44,7 +45,7 @@ export const displayAllProductsView = async (category) => {
       // toote kaardile vajutades otsi favorite nuppu toggelda seda, vaadet vahetamata
       if (event.target.id === `favorites-${product.id}`) {
         //otsin lemmikute nupu id põhjal
-        const favoriteButton = event.target;
+        const favoriteButton = event.target || "";
         //toggeldan lemmikute nupu klassi nime "inFavorites" pannes juurde ja võttes ära
         favoriteButton.classList.toggle("inFavorites");
         //vastavelt klassi nimele lisan teksi või ikooni, kes soovib
@@ -59,7 +60,7 @@ export const displayAllProductsView = async (category) => {
         // )
         //   ? "🤍" : "🩷";
 
-        customerConstructor.toggleFavorites(product);
+        customerConstructor.toggleFavorites(product.id);
       } else {
         // toote kaardile üks kõik kuhu mujale vajutades mine toode detaisesse vaatesse
         navigate("productDetail", product.id);

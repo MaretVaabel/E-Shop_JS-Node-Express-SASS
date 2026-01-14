@@ -56,9 +56,9 @@ export const getProductById = async (productId) => {
   }
 };
 
-export const getFavoritesProductByClientId = async (clientId) => {
+export const getFavoritesProductByuserID = async (userID) => {
   try {
-    const data = await fetch(`api/favorites/${clientId}`);
+    const data = await fetch(`api/favorites/${userID}`);
 
     const productsData = await data.json();
 
@@ -79,9 +79,9 @@ export const getFavoritesProductByClientId = async (clientId) => {
     console.error(error);
   }
 };
-export const addFavoriteProductById = async (clientId, productId) => {
+export const addFavoriteProductById = async (userID, productId) => {
   try {
-    const data = await fetch(`api/favorites/${clientId}/${productId}`, {
+    const data = await fetch(`api/favorites/${userID}/${productId}`, {
       method: "POST",
     });
 
@@ -92,9 +92,9 @@ export const addFavoriteProductById = async (clientId, productId) => {
   }
 };
 
-export const deleteFavoriteProductById = async (clientId, productId) => {
+export const deleteFavoriteProductById = async (userID, productId) => {
   try {
-    const data = await fetch(`api/favorites/${clientId}/${productId}`, {
+    const data = await fetch(`api/favorites/${userID}/${productId}`, {
       method: "DELETE",
     });
 

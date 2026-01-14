@@ -1,8 +1,8 @@
 import { customerConstructor } from "../constructors/Customer.js";
 
 // Lemmikute vaate genereerimine
-export const displayFavoritesView = () => {
-  const favorites = customerConstructor.getAllFavorites();
+export const displayFavoritesView = async () => {
+  const favorites = await customerConstructor.getAllFavorites();
 
   const container = document.getElementById("main-container");
   container.innerHTML = "<h2>Lemmikud</h2>";
@@ -11,15 +11,15 @@ export const displayFavoritesView = () => {
     const favoriteItemElement = document.createElement("div");
     favoriteItemElement.classList.add("favorite-item");
     favoriteItemElement.innerHTML = `
-        <h3>${item.product.name}</h3>
-        <p>Hind: $${item.product.price}</p>
+        <h3>${item.name}</h3>
+        <p>Hind: $${item.price}</p>
       `;
 
     // Eemaldamisnupp
     const removeButton = document.createElement("button");
     removeButton.textContent = "Eemalda lemmikutest";
     removeButton.onclick = () => {
-      customerConstructor.toggleFavorites(item.product);
+      customerConstructor.toggleFavorites(item.id);
       displayFavoritesView();
     };
     favoriteItemElement.append(removeButton);
