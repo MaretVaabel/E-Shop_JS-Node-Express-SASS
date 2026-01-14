@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Lihtne e-pood, kus kasutame ESModules, Node.js, Express.js ja axiost",
   "main": "main.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "start": "node server",
     "dev": "node --watch server"

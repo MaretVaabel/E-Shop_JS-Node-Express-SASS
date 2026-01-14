@@ -3,8 +3,13 @@ import { Product } from "./constructors/Product.js";
 //Need kes tahavad ka kuvada Kõik tooted
 export const getProductsDataByCategory = async (category) => {
   try {
-    const byCategory = category ? `/category/${category}` : "";
-    const data = await fetch(`/api/products${byCategory}`);
+    // MUUDATUS: Lisame query parameetri otse URL-i lõppu
+    const url =
+      category && category !== "all"
+        ? `/api/products?category=${encodeURIComponent(category)}`
+        : "/api/products";
+
+    const data = await fetch(url);
 
     const productsData = await data.json();
     const dataObject = productsData.map(
@@ -26,7 +31,7 @@ export const getProductsDataByCategory = async (category) => {
 
 export const getAllCategory = async () => {
   try {
-    const data = await fetch("api/products/categories");
+    const data = await fetch("/api/categories");
     return data.json();
   } catch (error) {
     console.error(error);
@@ -35,11 +40,9 @@ export const getAllCategory = async () => {
 
 export const getProductById = async (productId) => {
   try {
-    const data = await fetch(`api/products/${productId}`);
+    const data = await fetch(`/api/products/${productId}`);
 
     const productData = await data.json();
-
-    console.log(productData);
 
     const dataObject = new Product(
       productData.id,
@@ -58,11 +61,12 @@ export const getProductById = async (productId) => {
 
 export const getFavoritesProductByuserID = async (userID) => {
   try {
-    const data = await fetch(`api/favorites/${userID}`);
+    const data = await fetch(`/api/favorites/${userID}`);
 
     const productsData = await data.json();
 
-    console.log(productsData);
+    console.log("lemmikud", productsData);
+
     const dataObject = productsData.map(
       (item) =>
         new Product(
@@ -81,7 +85,7 @@ export const getFavoritesProductByuserID = async (userID) => {
 };
 export const addFavoriteProductById = async (userID, productId) => {
   try {
-    const data = await fetch(`api/favorites/${userID}/${productId}`, {
+    const data = await fetch(`/api/favorites/${userID}/${productId}`, {
       method: "POST",
     });
 
@@ -94,7 +98,7 @@ export const addFavoriteProductById = async (userID, productId) => {
 
 export const deleteFavoriteProductById = async (userID, productId) => {
   try {
-    const data = await fetch(`api/favorites/${userID}/${productId}`, {
+    const data = await fetch(`/api/favorites/${userID}/${productId}`, {
       method: "DELETE",
     });
 
