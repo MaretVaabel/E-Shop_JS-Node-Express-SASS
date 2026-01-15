@@ -1,33 +1,29 @@
-import express from "express";
-import fs from "fs/promises";
-import axios from "axios";
-import path from "path";
-import { fileURLToPath } from "url";
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const axios = require("axios"); // Installi: npm install axios
 
 const app = express();
 const PORT = 3000;
-
-// Failisüsteemi seadistamine
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const filePath = path.join(__dirname, "data", "products.json");
+const DATA_FILE = path.join(__dirname, "data", "products.json");
 const favoritesFilePath = path.join(__dirname, "data", "favorites.json");
 
-// Middleware staatiliste failide jaoks
-app.use(express.static("public"));
-
-// Funktsioon: Laadi andmed FakeStore API-st ja salvesta faili
+// 1. ANDMETE HALDUS
+// Funktsioon, mis tõmbab välised andmed ja salvestab faili
 const fetchAndSaveProducts = async () => {
-  const response = await axios.get("https://fakestoreapi.com/products");
-  const products = response.data;
-  await fs.writeFile("./data/products.json", JSON.stringify(products, null, 2));
+  try {
+    const response = await axios.get("https://fakestoreapi.com/products"); // Sinu väline allikas
+    fs.writeFileSync(DATA_FILE, JSON.stringify(response.data, null, 2));
+    console.log("Andmed edukalt uuendatud!");
+  } catch (error) {
+    console.error("Viga andmete pärimisel:", error);
+  }
 };
 
 // Funktsioon: Kontrolli, kas fail on tühi
-const isFileEmpty = async (path) => {
+const isFileEmpty = (file) => {
   try {
-    const rawData = await fs.readFile(path, "utf-8");
+    const rawData = fs.readFileSync(file, "utf-8");
     return !rawData.trim(); // Kontrollime, kas fail on tühi (või ainult tühikud)
   } catch (error) {
     console.error("Viga faili lugemisel", error);
@@ -35,64 +31,48 @@ const isFileEmpty = async (path) => {
   }
 };
 
-// API: Tagasta lokaalsest JSON-failist andmed
-app.get("/api/products", async (req, res) => {
+// Kontrolli, kas fail on tühi
+const emptyFile = isFileEmpty(DATA_FILE);
+
+// Käivitame andmete sisesamise serveri käivitumisel, kui meie fail on tühi
+emptyFile && fetchAndSaveProducts();
+
+// 2. MIDDLEWARE
+// app.use(express.static("public")); // Lubab juurdepääsu public kausta failidele
+// app.use(express.json());
+
+// 3. API ROUTES (Andmete jagamine frontendile)
+
+// Kõik tooted (või kategooria järgi)
+app.get("/api/products", (req, res) => {
   try {
-    // Seadista vastuse päised
-    res.setHeader("Content-Type", "application/json");
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-
-    // Kontrolli, kas fail on tühi
-    const emptyFile = await isFileEmpty(filePath);
-
-    // Kui fail on tühi, lae andmed API-st ja salvesta need
-    if (emptyFile) {
-      console.log("Fail on tühi. Laadin andmed FakeStore API-st...");
-      await fetchAndSaveProducts();
+    const data = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+    const category = req.query.category;
+    if (category) {
+      const filtered = data.filter((p) => p.category === category);
+      return res.json(filtered);
     }
-
-    // Loe andmed failist
-    const rawData = await fs.readFile(filePath, "utf-8");
-
-    // Parssige andmed
-    const products = JSON.parse(rawData);
-
-    // Tagasta andmed kasutajale
-    res.status(200).json(products);
+    res.json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Andmete lugemine ebaõnnestus" });
+    res.status(404).json({ message: "Andmete lugemine ebaõnnestus" });
   }
 });
 
-app.get("/api/products/category/:category", async (req, res) => {
-  try {
-    // Seadista vastuse päised
-    res.setHeader("Content-Type", "application/json");
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+// Üksik toode ID järgi
+app.get("/api/products/:id", (req, res) => {
+  const data = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+  const product = data.find((p) => p.id === parseInt(req.params.id));
 
-    // Loe andmed failist
-    const rawData = await fs.readFile(filePath, "utf-8");
-
-    // Parssige andmed
-    const products = JSON.parse(rawData);
-
-    const categoryProducts = products.filter(
-      (item) => item.category === req.params.category
-    );
-    res.status(200).json(categoryProducts);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Andmete lugemine ebaõnnestus" });
-  }
+  if (!product) return res.status(404).send("Toodet ei leitud");
+  res.json(product);
 });
 
 // Endpoint to get categories
-app.get("/api/products/categories", async (req, res) => {
+app.get("/api/categories", (req, res) => {
   try {
-    const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
+    const data = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
     const categories = data.map((item) => item.category);
-    const uniqueArray = [...new Set(categories)];
+    const uniqueArray = ["all", ...new Set(categories)];
 
     if (uniqueArray) {
       res.status(200).json(uniqueArray);
@@ -103,63 +83,46 @@ app.get("/api/products/categories", async (req, res) => {
     res.status(404).json({ message: "Andmete lugemine ebaõnnestus" });
   }
 });
-
-// Endpoint to get a single product by ID
-app.get("/api/products/:id", async (req, res) => {
-  try {
-    const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
-    const product = data.find((p) => p.id === parseInt(req.params.id));
-
-    if (product) {
-      res.status(200).json(product);
-    } else {
-      res.status(404).json({ message: "Toote andmete lugemine ebaõnnestus" });
-    }
-  } catch (error) {
-    res.status(404).json({ message: "Andmete lugemine ebaõnnestus" });
-  }
-});
-
 // Endpoint to get a favorites products by client id
-app.get("/api/favorites/:userID", async (req, res) => {
+app.get("/api/favorites/:userID", (req, res) => {
   try {
-    const favoritesData = JSON.parse(
-      await fs.readFile(favoritesFilePath, "utf-8")
-    );
+    const isEmptyFavorites = isFileEmpty(favoritesFilePath);
+    if (!isEmptyFavorites) {
+      const favoritesData = JSON.parse(
+        fs.readFileSync(favoritesFilePath, "utf-8")
+      );
 
-    const favoritesIds = favoritesData[req.params.userID] || [];
+      console.log("fav", favoritesData);
 
-    const data = JSON.parse(await fs.readFile(filePath, "utf-8"));
+      const favoritesIds = favoritesData[req.params.userID] || [];
+      const data = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
 
-    const products = data.filter((product) =>
-      favoritesIds.includes(product.id)
-    );
+      const products =
+        data.filter((product) => favoritesIds.includes(product.id)) || [];
 
-    if (products) {
       res.status(200).json(products);
     } else {
-      res.status(404).json({ message: "Toote andmete lugemine ebaõnnestus" });
+      res.status(200).json([]);
     }
   } catch (error) {
     res.status(404).json({ message: "Andmete lugemine ebaõnnestus" });
   }
 });
-
 // Endpoint to add a favorite product by ID
-app.post("/api/favorites/:userID/:productId", async (req, res) => {
+app.post("/api/favorites/:userID/:productId", (req, res) => {
   try {
-    const emptyFile = await isFileEmpty(favoritesFilePath);
+    const emptyFile = isFileEmpty(favoritesFilePath);
     if (emptyFile) {
       //make the object, that has client id as key and array of product ids as value
       const newData = {
         [req.params.userID]: [parseInt(req.params.productId)],
       };
-      await fs.writeFile(favoritesFilePath, JSON.stringify(newData, null, 2));
+      fs.writeFileSync(favoritesFilePath, JSON.stringify(newData, null, 2));
       return res.status(200).json(newData);
     }
 
     const favoritesData = JSON.parse(
-      await fs.readFile(favoritesFilePath, "utf-8")
+      fs.readFileSync(favoritesFilePath, "utf-8")
     );
 
     //take the client favorite product id array from file
@@ -171,10 +134,7 @@ app.post("/api/favorites/:userID/:productId", async (req, res) => {
     favoritesData[req.params.userID] = uniqueIds;
 
     // write new array to file
-    await fs.writeFile(
-      favoritesFilePath,
-      JSON.stringify(favoritesData, null, 2)
-    );
+    fs.writeFileSync(favoritesFilePath, JSON.stringify(favoritesData, null, 2));
     //See json, mis sa siin tagastad on näha ka veebilhitseja network tab'is
     res.status(200).json(uniqueIds);
   } catch (error) {
@@ -183,7 +143,6 @@ app.post("/api/favorites/:userID/:productId", async (req, res) => {
       .json({ message: "Andmete kirjutamine lemmikutesse ebaõnnestus" });
   }
 });
-
 // Endpoint to delete a favorite product by ID
 app.delete("/api/favorites/:userID/:productId", async (req, res) => {
   try {
@@ -210,7 +169,15 @@ app.delete("/api/favorites/:userID/:productId", async (req, res) => {
   }
 });
 
-// Käivita server
+app.use(express.static(path.join(__dirname, "public")));
+
+// 4. SPA ROUTING (Oluline!)
+// See peab olema viimane route. Kui keegi läheb /cart või /product/1,
+// siis server annab ikka index.html, ja sinna sisse ehitatud JS otsustab, mida näidata.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 app.listen(PORT, () => {
-  console.log(`Server töötab aadressil http://localhost:${PORT}`);
+  console.log(`Server töötab: http://localhost:${PORT}`);
 });

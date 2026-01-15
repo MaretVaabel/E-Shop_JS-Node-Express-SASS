@@ -6,8 +6,6 @@ import { getProductsDataByCategory } from "../api.js";
 
 export const displayAllProductsView = async (category) => {
   const products = await getProductsDataByCategory(category);
-
-  console.log("products", products);
   const container = document.getElementById("main-container");
 
   container.innerHTML = "<h2>Tooted</h2>";

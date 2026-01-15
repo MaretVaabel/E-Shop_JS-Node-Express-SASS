@@ -67,7 +67,7 @@ export class Customer {
 
   isFavorite(productId) {
     //console.log("is favorie", productId);
-    console.log("is favorie", productId, this.favorites);
+    //  console.log("is favorie", productId, this.favorites);
     const existingItem = this.favorites.find((item) => item.id === productId);
 
     return !!existingItem;
@@ -88,7 +88,7 @@ export class Customer {
 
     sessionStorage.setItem("userID", randomId);
 
-    alert(`User ${userName} has logged in`);
+    // alert(`User ${userName} has logged in`);
     //Võta kõik lemmikud BE valmis
     this.getAllFavorites();
   }
